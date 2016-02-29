@@ -3,10 +3,10 @@
 #include "ofCamera.h"
 #include "ofEvents.h"
 
-class ofEasyCam : public ofCamera {
+class ofxEasyCam : public ofCamera {
 public:
-	ofEasyCam();
-	~ofEasyCam();
+	ofxEasyCam();
+	~ofxEasyCam();
 
 	// TODO: this should be ofGetViewRect() eventually
 	virtual void begin(ofRectangle viewport = ofGetCurrentViewport());

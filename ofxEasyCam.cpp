@@ -1,13 +1,13 @@
-#include "ofEasyCam.h"
+#include "ofxEasyCam.h"
 #include "ofMath.h"
 #include "ofUtils.h"
 
-// when an ofEasyCam is moving due to momentum, this keeps it
+// when an ofxEasyCam is moving due to momentum, this keeps it
 // from moving forever by assuming small values are zero.
 float minDifference = 0.1e-5f;
 
 //----------------------------------------
-ofEasyCam::ofEasyCam() {
+ofxEasyCam::ofxEasyCam() {
 	lastDistance = 0;
 	drag = 0.9f;
 	sensitivityRot = 1.0f;  // side to side: 1 = 180 deg; 0.5 = 90 deg.
@@ -31,12 +31,12 @@ ofEasyCam::ofEasyCam() {
 }
 
 //----------------------------------------
-ofEasyCam::~ofEasyCam() {
+ofxEasyCam::~ofxEasyCam() {
 	disableMouseInput();
 }
 
 //----------------------------------------
-void ofEasyCam::update(ofEventArgs & args) {
+void ofxEasyCam::update(ofEventArgs & args) {
     if (!bDistanceSet && bAutoDistance) {
         setDistance(getImagePlaneDistance(viewport), true);
     }
@@ -55,35 +55,35 @@ void ofEasyCam::update(ofEventArgs & args) {
 }
 
 //----------------------------------------
-void ofEasyCam::begin(ofRectangle viewport) {
+void ofxEasyCam::begin(ofRectangle viewport) {
 	this->viewport = viewport;
 	ofCamera::begin(viewport);	
 }
 
 //----------------------------------------
-void ofEasyCam::setTarget(const ofVec3f& targetPoint) {
+void ofxEasyCam::setTarget(const ofVec3f& targetPoint) {
 	target.setPosition(targetPoint);
 	lookAt(target);
 }
 
 //----------------------------------------
-void ofEasyCam::setTarget(ofNode& targetNode) {
+void ofxEasyCam::setTarget(ofNode& targetNode) {
 	target = targetNode;
 	lookAt(target);
 }
 
 //----------------------------------------
-ofNode& ofEasyCam::getTarget() {
+ofNode& ofxEasyCam::getTarget() {
 	return target;
 }
 
 //----------------------------------------
-void ofEasyCam::setDistance(float distance) {
+void ofxEasyCam::setDistance(float distance) {
 	setDistance(distance, true);
 }
 
 //----------------------------------------
-void ofEasyCam::setDistance(float distance, bool save) {
+void ofxEasyCam::setDistance(float distance, bool save) {
 	//should this be the distance from the camera to the target?
 	if (distance > 0.0f) {
 		if (save) {
@@ -95,12 +95,12 @@ void ofEasyCam::setDistance(float distance, bool save) {
 }
 
 //----------------------------------------
-float ofEasyCam::getDistance() const {
+float ofxEasyCam::getDistance() const {
 	return target.getPosition().distance(getPosition());
 }
 
 //----------------------------------------
-void ofEasyCam::setAutoDistance(bool bAutoDistance) {
+void ofxEasyCam::setAutoDistance(bool bAutoDistance) {
     this->bAutoDistance = bAutoDistance;
     if (bAutoDistance) {
         bDistanceSet = false;
@@ -108,65 +108,65 @@ void ofEasyCam::setAutoDistance(bool bAutoDistance) {
 }
 
 //----------------------------------------
-void ofEasyCam::setDrag(float drag) {
+void ofxEasyCam::setDrag(float drag) {
 	this->drag = drag;
 }
 
 //----------------------------------------
-float ofEasyCam::getDrag() const {
+float ofxEasyCam::getDrag() const {
 	return drag;
 }
 
 //----------------------------------------
-void ofEasyCam::setTranslationKey(char key) {
+void ofxEasyCam::setTranslationKey(char key) {
 	doTranslationKey = key;
 }
 
 //----------------------------------------
-char ofEasyCam::getTranslationKey() {
+char ofxEasyCam::getTranslationKey() {
 	return doTranslationKey;
 }
 
 //----------------------------------------
-void ofEasyCam::enableMouseInput() {
+void ofxEasyCam::enableMouseInput() {
 	if (!bMouseInputEnabled) {
 		bMouseInputEnabled = true;
 		//ofRegisterMouseEvents(this);
-		ofAddListener(ofEvents().update , this, &ofEasyCam::update);
+		ofAddListener(ofEvents().update , this, &ofxEasyCam::update);
 	}
 }
 
 //----------------------------------------
-void ofEasyCam::disableMouseInput() {
+void ofxEasyCam::disableMouseInput() {
 	if (bMouseInputEnabled) {
 		bMouseInputEnabled = false;
 		//ofUnregisterMouseEvents(this);
-		ofRemoveListener(ofEvents().update, this, &ofEasyCam::update);
+		ofRemoveListener(ofEvents().update, this, &ofxEasyCam::update);
 	}
 }
 
 //----------------------------------------
-bool ofEasyCam::getMouseInputEnabled() {
+bool ofxEasyCam::getMouseInputEnabled() {
 	return bMouseInputEnabled;
 }
 
 //----------------------------------------
-void ofEasyCam::enableMouseMiddleButton() {
+void ofxEasyCam::enableMouseMiddleButton() {
 	bEnableMouseMiddleButton = true;
 }
 
 //----------------------------------------
-void ofEasyCam::disableMouseMiddleButton() {
+void ofxEasyCam::disableMouseMiddleButton() {
 	bEnableMouseMiddleButton = false;
 }
 
 //----------------------------------------
-bool ofEasyCam::getMouseMiddleButtonEnabled() {
+bool ofxEasyCam::getMouseMiddleButtonEnabled() {
 	return bEnableMouseMiddleButton;
 }
 
 //----------------------------------------
-void ofEasyCam::updateTranslation() {
+void ofxEasyCam::updateTranslation() {
 	if (bApplyInertia) {
 		moveX *= drag;
 		moveY *= drag;
@@ -180,7 +180,7 @@ void ofEasyCam::updateTranslation() {
 }	
 
 //----------------------------------------
-void ofEasyCam::updateRotation() {
+void ofxEasyCam::updateRotation() {
 	if (bApplyInertia) {
 		xRot *=drag; 
 		yRot *=drag;
@@ -204,7 +204,7 @@ void ofEasyCam::updateRotation() {
 }
 
 //----------------------------------------
-void ofEasyCam::updateMouse() {
+void ofxEasyCam::updateMouse() {
 	mouse = ofVec2f(ofGetMouseX(), ofGetMouseY());
 	if(viewport.inside(mouse.x, mouse.y) && !bValidClick && ofGetMousePressed()) {
 		if ((bEnableMouseMiddleButton && ofGetMousePressed(OF_MOUSE_BUTTON_MIDDLE)) || 
@@ -282,26 +282,26 @@ void ofEasyCam::updateMouse() {
 }
 
 //----------------------------------------
-void ofEasyCam::setFixUpwards(bool bFixUpwards) {
+void ofxEasyCam::setFixUpwards(bool bFixUpwards) {
 	this->bFixUpwards = bFixUpwards;
 }
 
 //----------------------------------------
-bool ofEasyCam::getFixUpwards() {
+bool ofxEasyCam::getFixUpwards() {
 	return bFixUpwards;
 }
 
 //----------------------------------------
-void ofEasyCam::enableRoll() {
+void ofxEasyCam::enableRoll() {
 	bRollEnabled = true;
 }
 
 //----------------------------------------
-void ofEasyCam::disableRoll() {
+void ofxEasyCam::disableRoll() {
 	bRollEnabled = false;
 }
 
 //----------------------------------------
-bool ofEasyCam::getRollEnabled() {
+bool ofxEasyCam::getRollEnabled() {
 	return bRollEnabled;
 }
