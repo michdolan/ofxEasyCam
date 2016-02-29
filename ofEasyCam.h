@@ -10,7 +10,6 @@ public:
 
 	// TODO: this should be ofGetViewRect() eventually
 	virtual void begin(ofRectangle viewport = ofGetCurrentViewport());
-	void reset();
 
 	//----------------------------------------
 	// advanced functions
@@ -26,10 +25,12 @@ public:
 	// it is a normalized value between 0-1
 	void setDrag(float drag);
 	float getDrag() const;
+
 	// the translation key is the key used to switch between rotation and translation.
 	// translation happens only when the key is pressed.
 	void setTranslationKey(char key);
     char getTranslationKey();
+
 	// enable or disable mouse input to navigate
 	void enableMouseInput();
 	void disableMouseInput();
@@ -40,12 +41,18 @@ public:
 	bool getMouseMiddleButtonEnabled();
 	
     void setAutoDistance(bool bAutoDistance);
+
+	void setFixUpwards(bool bFixUpwards);
+	bool getFixUpwards();
+
+	void enableRoll();
+	void disableRoll();
+	bool getRollEnabled();
 	
 private:
 	void setDistance(float distance, bool save);
 
 	ofNode target;
-	
 	
 	bool bEnableMouseMiddleButton;
 	bool bApplyInertia;
@@ -56,6 +63,8 @@ private:
 	bool bMouseInputEnabled;
 	bool bDistanceSet;
     bool bAutoDistance;
+	bool bFixUpwards;
+	bool bRollEnabled;
 	float lastDistance;
 
 	float drag;
@@ -84,10 +93,10 @@ private:
 	void updateMouse();
 	
 	char doTranslationKey;
-	
-	unsigned long lastTap;
 		
 	ofQuaternion curRot;  
     
-	ofRectangle viewport;// having the  viewport saved localy will make it easier for all the needed maths dealing with viewport.
+	// having the  viewport saved localy will make it easier for all the needed 
+	// maths dealing with viewport.
+	ofRectangle viewport;
 };
